@@ -1,6 +1,8 @@
 package eu.syrou.hodor;
 
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewGroupCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,9 @@ import android.view.animation.AnimationUtils;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import eu.syrou.hodor.anim.HodorAnimation;
 
 /**
  * Created by Syrou on 21/04/16.
@@ -19,49 +24,29 @@ public class Hodor {
 
 
     private static final String TAG = Hodor.class.getSimpleName();
-    private static int mActiveViewGroupId;
-    private static ViewGroup mActiveViewGroup;
     private static final HashMap<Integer, HashMap<Integer, View>> subview = new HashMap<>();
+    private static final HashMap<Integer, Builder> instanceMap = new HashMap<>();
 
     public Hodor(Builder builder) {
 
     }
 
-    public static void setRootView(ViewGroup viewGroup)
+    public static void removeView(ViewGroup viewGroup,@Nullable String tag)
     {
-        mActiveViewGroupId = viewGroup.hashCode();
-        mActiveViewGroup = viewGroup;
+        findViewAndRemove(viewGroup,null, tag);
     }
 
-    public static void addView(View view)
+    private static void findViewAndRemove(@Nullable ViewGroup viewGroup,@Nullable View view, @Nullable String tag)
     {
-
-
-    }
-
-    public static void addView(View view, @Nullable String tag)
-    {
-        view.setTag(tag);
-        addView(view);
-    }
-
-    public static void removeView(@Nullable String tag)
-    {
-        findViewAndRemove(null, tag);
-    }
-
-    private static void findViewAndRemove(@Nullable View view, @Nullable String tag)
-    {
-        boolean hasBeenFound=false;
         View foundView = null;
-        HashMap<Integer, View> sub = subview.get(mActiveViewGroupId);
+        HashMap<Integer, View> sub = subview.get(viewGroup);
         if(Condition.isEqual(sub, null))
         {
             Log.d(TAG, "No active context bound to this viewgroup");
             return;
         }
         Iterator<Map.Entry<Integer, View>> iter = sub.entrySet().iterator();
-        while (iter.hasNext() && hasBeenFound == false) {
+        while (iter.hasNext() && foundView == null) {
             HashMap.Entry<Integer, View> entry = iter.next();
             //Integer key = entry.getKey();
             View value = entry.getValue();
@@ -69,61 +54,76 @@ public class Hodor {
                 Log.d(TAG, "Found the view.. removing");
                 foundView = value;
                 iter.remove();
-                hasBeenFound=true;
             }
         }
-        subview.put(mActiveViewGroupId, sub);
-        mActiveViewGroup.removeView(foundView);
-        foundView=null;
+        subview.put(viewGroup.hashCode(), sub);
+        viewGroup.removeView(foundView);
         Log.d(TAG, "Should have removed");
     }
 
-    public static void removeView(View view)
+    public static void removeView(ViewGroup viewGroup, View view)
     {
-        findViewAndRemove(view, null);
+        findViewAndRemove(viewGroup, view, null);
     }
 
-    private static View getLastActiveView(HashMap<Integer, View> sub)
+    public static Builder with(ViewGroup viewGroup)
     {
-        return  sub.get(sub.size()-1);
-
-    }
-
-    private static void PlayAnim(View v, int animationid, int StartOffset )
-    {
-        if( v != null )
-        {
-            Animation animation = AnimationUtils.loadAnimation(v.getContext(), animationid  );
-            animation.setStartOffset(StartOffset);
-            v.startAnimation(animation);
+        if(instanceMap.get(viewGroup.hashCode()) != null) {
+            return instanceMap.get(viewGroup.hashCode());
         }
+        return null;
     }
 
     public static class Builder{
         private static Builder builder;
+        private HodorCoordination hodorCoordination;
 
-        public Builder getInstance(){
-            if (builder==null){
-                builder=new Builder();
+        public Builder with(ViewGroup viewGroup)
+        {
+            if(instanceMap.get(viewGroup) == null) {
+                hodorCoordination = new HodorCoordination(viewGroup);
+                instanceMap.put(viewGroup.hashCode(), this);
             }
-            return builder;
-        }
-        public Builder addView(View view){
-            HashMap<Integer, View> sub = subview.get(mActiveViewGroupId);
-            if(Condition.isEqual(sub, null)){
-                sub = new HashMap<>();
-            }else{
-                View lastActiveView = getLastActiveView(sub);
-                Log.d(TAG, "Last view:"+lastActiveView.hashCode());
-                PlayAnim(lastActiveView, R.anim.slide_right_out, 0);
-                mActiveViewGroup.removeView(lastActiveView);
-            }
-            sub.put(sub.size(), view);
-            subview.put(mActiveViewGroupId, sub);
-            PlayAnim(view, R.anim.slide_right_in,0);
-            mActiveViewGroup.addView(view);
             return this;
         }
+
+        public Builder addView(View view){
+
+            hodorCoordination.addView(view);
+            return this;
+        }
+
+        public Builder removeView(View view)
+        {
+            hodorCoordination.removeView(view);
+            return this;
+        }
+
+
+        public Builder addView(ViewGroup viewGroup, View view, @Nullable String tag)
+        {
+            view.setTag(tag);
+            addView(view);
+            return this;
+        }
+        public Builder rotate(long time,TimeUnit timeUnit, final HodorCoordination.Direction direction)
+        {
+            final long ms = timeUnit.toMillis(time);
+            hodorCoordination.rotate(ms, timeUnit, direction);
+            return this;
+        }
+
+        public Builder transform(HodorAnimation hodorAnimation)
+        {
+            hodorCoordination.transform(hodorAnimation);
+            return this;
+        }
+
+        public void back()
+        {
+            hodorCoordination.onBackpress();
+        }
+
 
         public Hodor build() {
             Hodor result = new Hodor(this);

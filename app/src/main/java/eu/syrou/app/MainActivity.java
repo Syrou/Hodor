@@ -1,20 +1,33 @@
 package eu.syrou.app;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import java.util.concurrent.TimeUnit;
 
 import eu.syrou.hodor.Hodor;
+import eu.syrou.hodor.HodorCoordination;
+import eu.syrou.hodor.anim.HodorAnimationSlideInFromLeft;
+import eu.syrou.hodor.anim.HodorAnimationSlideInFromTop;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FrameLayout upperFrameLayout;
+    private Hodor.Builder hodorBulder;
+    private RelativeLayout secondView;
+    private RelativeLayout secondView2;
+    private FrameLayout underFrameLayout;
+    private RelativeLayout thirdView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,35 +36,24 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_body);
-
-        Hodor.setRootView(frameLayout);
-
-        final LinearLayout testView = (LinearLayout) getLayoutInflater().inflate(R.layout.test_view, null);
-        final LinearLayout anotherView = (LinearLayout) getLayoutInflater().inflate(R.layout.another_view, null);
-        final LinearLayout thirdView = (LinearLayout) getLayoutInflater().inflate(R.layout.third_view, null);
-
-        Hodor.Builder hodorBulder = new Hodor.Builder();
-        hodorBulder.addView(testView).build();
-
-        /*Hodor.addView(testView);
+        upperFrameLayout = (FrameLayout) findViewById(R.id.upper_content_body);
+        underFrameLayout = (FrameLayout) findViewById(R.id.under_content_body);
 
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Hodor.addView(anotherView);
-            }
-        }, 5000);
+        final RelativeLayout firstView = (RelativeLayout) getLayoutInflater().inflate(R.layout.first_view, null);
+        secondView = (RelativeLayout) getLayoutInflater().inflate(R.layout.second_view, null);
+        final RelativeLayout thirdView = (RelativeLayout) getLayoutInflater().inflate(R.layout.third_view, null);
 
-        Handler handler2 = new Handler();
-        handler2.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Hodor.addView(thirdView);
-            }
-        }, 10000);*/
+        final RelativeLayout firstView2 = (RelativeLayout) getLayoutInflater().inflate(R.layout.first_view, null);
+        secondView2 = (RelativeLayout) getLayoutInflater().inflate(R.layout.second_view, null);
+        thirdView2 = (RelativeLayout) getLayoutInflater().inflate(R.layout.third_view, null);
+
+        hodorBulder = new Hodor.Builder();
+        hodorBulder.with(upperFrameLayout).addView(firstView).addView(secondView).transform(new HodorAnimationSlideInFromLeft()).build();
+
+        Hodor.Builder hodorBulder2 = new Hodor.Builder();
+        hodorBulder2.with(underFrameLayout).addView(firstView2).addView(secondView2).addView(thirdView2).rotate(1000, TimeUnit.MILLISECONDS, HodorCoordination.Direction.FORWARD).transform(new HodorAnimationSlideInFromLeft()).build();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Hodor.with(upperFrameLayout).removeView(secondView);
+        //Hodor.with(underFrameLayout).removeView(secondView2);
+        //Hodor.with(underFrameLayout).removeView(thirdView2);
     }
 
     @Override
@@ -83,5 +93,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+       Hodor.with(upperFrameLayout).back();
+        //super.onBackPressed();
     }
 }
