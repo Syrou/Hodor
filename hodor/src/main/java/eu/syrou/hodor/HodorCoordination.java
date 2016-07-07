@@ -1,6 +1,7 @@
 package eu.syrou.hodor;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -37,14 +38,19 @@ public class HodorCoordination {
     {
         Stack<View> viewStack = viewGroupMap.get(mLatestUsedViewGroup.hashCode());
         if(Condition.isEqual(viewStack, null)){
+            Log.d(TAG, "This should only be logged twice");
             viewStack = new Stack<>();
         }else{
             View lastActiveView = viewStack.peek();
+            mHodorAnimation.outAnimation(lastActiveView, 1000);
             mLatestUsedViewGroup.removeView(lastActiveView);
         }
-        mLatestUsedViewGroup.addView(view);
-        viewStack.push(view);
-        viewGroupMap.put(mLatestUsedViewGroup.hashCode(), viewStack);
+        if(view != null) {
+            mHodorAnimation.inAnimation(view, 1000);
+            mLatestUsedViewGroup.addView(view);
+            viewStack.push(view);
+            viewGroupMap.put(mLatestUsedViewGroup.hashCode(), viewStack);
+        }
     }
 
     public void removeView(View view) {
@@ -57,6 +63,17 @@ public class HodorCoordination {
                     break;
                 }
             }
+            if (viewStack.peek().getParent() == null) {
+                mLatestUsedViewGroup.addView(viewStack.peek());
+            }
+            viewGroupMap.put(mLatestUsedViewGroup.hashCode(), viewStack);
+        }
+    }
+
+    public void back() {
+        Stack<View> viewStack = viewGroupMap.get(mLatestUsedViewGroup.hashCode());
+        if(viewStack != null) {
+            mLatestUsedViewGroup.removeView(viewStack.pop());
             if (viewStack.peek().getParent() == null) {
                 mLatestUsedViewGroup.addView(viewStack.peek());
             }
@@ -88,7 +105,7 @@ public class HodorCoordination {
                     View lastActiveView = viewStack.pop();
                     mHodorAnimation.outAnimation(lastActiveView, 1000);
                     mLatestUsedViewGroup.removeView(lastActiveView);
-                    viewStack.insertElementAt(lastActiveView, 0);
+                    //viewStack.insertElementAt(lastActiveView, 0);
                     //Add the new view
                     View newViewToDisplay = viewStack.peek();
                     mHodorAnimation.inAnimation(newViewToDisplay, 1000);

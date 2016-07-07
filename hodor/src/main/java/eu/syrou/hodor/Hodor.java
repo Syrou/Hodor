@@ -1,9 +1,17 @@
 package eu.syrou.hodor;
 
+import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewGroupCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.AbsSavedState;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -78,6 +86,51 @@ public class Hodor {
         private static Builder builder;
         private HodorCoordination hodorCoordination;
 
+        public Builder activity(Activity context)
+        {
+            context.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+                @Override
+                public void onActivityCreated(Activity activity, Bundle bundle) {
+                    //Log.d(TAG, "onActivityCreated() called with: " + "activity = [" + activity + "], bundle = [" + bundle + "]");
+                    if(bundle != null) {
+                        addView(new HodorStatesaveTestView(activity));
+                    }
+                }
+
+                @Override
+                public void onActivityStarted(Activity activity) {
+
+                }
+
+                @Override
+                public void onActivityResumed(Activity activity) {
+
+                }
+
+                @Override
+                public void onActivityPaused(Activity activity) {
+
+                }
+
+                @Override
+                public void onActivityStopped(Activity activity) {
+
+                }
+
+                @Override
+                public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+
+                    HashMap<Integer, View> view = subview.get("sfsf");
+                }
+
+                @Override
+                public void onActivityDestroyed(Activity activity) {
+
+                }
+            });
+            return this;
+        }
+
         public Builder with(ViewGroup viewGroup)
         {
             if(instanceMap.get(viewGroup) == null) {
@@ -98,7 +151,6 @@ public class Hodor {
             hodorCoordination.removeView(view);
             return this;
         }
-
 
         public Builder addView(ViewGroup viewGroup, View view, @Nullable String tag)
         {

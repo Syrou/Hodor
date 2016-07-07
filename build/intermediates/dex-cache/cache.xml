@@ -1,3 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="E:\Oculus\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="6a452909bb88b7fd626ee5259711c57d4b1e09f0">
+        <dex dex="E:\Oculus\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_0f71d0f119c687792ebee9e897afbf2823890137\classes.dex" />
+    </item>
+    <item
+        jar="E:\Oculus\app\build\intermediates\exploded-aar\com.android.support\design\23.3.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="f0001e71cea6ae432a00021c6f727f5ef0f3d27e">
+        <dex dex="E:\Oculus\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.3.0_ad9aebb6016a06832309f1d58eba697d88e35df6\classes.dex" />
+    </item>
+    <item
+        jar="E:\Oculus\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.3.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
+        <dex dex="E:\Oculus\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.3.0_d7c66a73544ac2e224d91a9b1305ad76b8034f97\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Syrou\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\23.3.0\support-annotations-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
+        <dex dex="E:\Oculus\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.3.0_ba0280c8568678fdbe71ca67af0bdf7988478c72\classes.dex" />
+    </item>
+    <item
+        jar="E:\Oculus\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="e1649509abb1418e9fc3e3d4a8bf065da0ffb1c3">
+        <dex dex="E:\Oculus\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_b5e0fb580ad467fe236dcae5878bf915f29b553f\classes.dex" />
+    </item>
+    <item
+        jar="E:\Oculus\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.3.0\jars\libs\internal_impl-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
+        <dex dex="E:\Oculus\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.3.0_62e01db8b07982113a22531bb16cc70ae25b3f61\classes.dex" />
+    </item>
+    <item
+        jar="E:\Oculus\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.3.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="debf30ce0a7560396b6235edef77e447006454c2">
+        <dex dex="E:\Oculus\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.3.0_b711c759d509124bcc78a0384d991e234116a8b6\classes.dex" />
+    </item>
+    <item
+        jar="E:\Oculus\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.3.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
+        <dex dex="E:\Oculus\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.3.0_16ad6e4bff65577c8d690210f2f8f182220f747b\classes.dex" />
+    </item>
+    <item
+        jar="E:\Oculus\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.3.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
+        <dex dex="E:\Oculus\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.3.0_f56ff7654473b13d94c1a6e48ca75d53d3c79b32\classes.dex" />
+    </item>
+    <item
+        jar="E:\Oculus\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.3.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="a0b5d60246cd9d4f3f2443611b3b4c25265840b5">
+        <dex dex="E:\Oculus\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.3.0_06028879abfbcdcb146cdb4867160d9409c917a2\classes.dex" />
+    </item>
+
+</items>
